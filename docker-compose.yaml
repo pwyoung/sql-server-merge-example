@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  sqlserverdb:
+    image: "mcr.microsoft.com/mssql/server:2019-CU14-ubuntu-20.04"
+    env_file:
+      - ./sqlserverdb.env
+    ports:
+      - "1433:1433"  # host:container
+    healthcheck:
+      test: ["CMD", "/shared/health-check"]
+      interval: 1s
+      retries: 20
+    volumes:
+      - ./shared:/shared
+#      - sqlsystem:/var/opt/mssql/
+
+#volumes:
+#  sqlsystem:
