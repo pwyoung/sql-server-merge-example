@@ -1,3 +1,11 @@
 #!/bin/bash
 
-echo "Test scripts"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "Test scripts in path ${SCRIPT_DIR}"
+
+SQLCMD="/opt/mssql-tools/bin/sqlcmd -Usa -P${SA_PASSWORD}"
+
+$SQLCMD -i test-merge.sql
+
+
+
