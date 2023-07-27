@@ -1,11 +1,19 @@
 #!/bin/bash
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-echo "Test scripts in path ${SCRIPT_DIR}"
-
 SQLCMD="/opt/mssql-tools/bin/sqlcmd -Usa -P${SA_PASSWORD}"
 
-$SQLCMD -i test-merge.sql
+wait_for_health_check() {
+    for i in {1..10}; do
+        ${SCRIPT_DIR}/health-check && echo "Health Check Succeeded"  && break || echo "Health Check Failed"
+        echo "Sleeping" && sleep 1
+    done
+}
 
+run_test_script() {
+    $SQLCMD -i test-merge.sql
+}
 
+wait_for_health_check
 
+run_test_script
